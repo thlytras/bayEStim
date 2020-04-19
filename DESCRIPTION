@@ -1,0 +1,20 @@
+Package: bayEStim
+Type: Package
+Title: Estimate epidemic effective reproduction number in a Bayesian framework
+Version: 0.0.1
+Authors@R: 
+    c(person(given="Theodore", family="Lytras", 
+             email="thlytras@gmail.com", role=c("aut","cre"), 
+             comment=c(ORCID="0000-0002-4146-4122")))
+Maintainer: Theodore Lytras <thlytras@gmail.com>
+Imports: rjags, coda, graphics
+Depends: R (>= 2.10)
+Description: Estimate the effective reproduction number of an epidemic
+    using the method of Cori et al. <doi:10.1093/aje/kwt133>, but in a
+    Bayesian MCMC framework that allows for imputing missing symptom
+    onset dates, extrapolating infection times and adjusting for cases 
+    not yet ascertained ("nowcasting").
+License: GPL (>=2)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
