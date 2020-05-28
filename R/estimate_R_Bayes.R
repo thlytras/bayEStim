@@ -114,8 +114,8 @@
 #' @export
 estimate_R_Bayes <- function(donset, ddiag, local, t_from, SI_mean, SI_std, 
     t_window = 7, t_breaks = NULL, maxDate = NULL,
-    withInfectTimes = TRUE, delayAdjust = TRUE, incub_mean = 5.1, incub_std = 4.4,
-    date0 = as.Date("2020-1-31"), burn = 200, iter = 2000) {
+    withInfectTimes = TRUE, delayAdjust = TRUE, incub_mean = 5.1, incub_std = 3.0,
+    date0 = as.Date("2020-1-31"), burn = 500, iter = 5000) {
   
   # Check data
   if ((!is.null(ddiag) && length(ddiag)!=length(donset)) || length(donset)!=length(local)) {

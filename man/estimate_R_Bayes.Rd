@@ -17,10 +17,10 @@ estimate_R_Bayes(
   withInfectTimes = TRUE,
   delayAdjust = TRUE,
   incub_mean = 5.1,
-  incub_std = 4.4,
+  incub_std = 3,
   date0 = as.Date("2020-1-31"),
-  burn = 200,
-  iter = 2000
+  burn = 500,
+  iter = 5000
 )
 }
 \arguments{

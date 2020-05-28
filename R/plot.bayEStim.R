@@ -30,8 +30,25 @@ plot.summary.bayEStim <- function(x,
     ylim=c(0, max(x$R$hi)), xlim=range(date),
     xlab="Date", ylab="R_effective"
   ))
-  with(x$R, polygon(x=c(date,rev(date)), y=c(lo,rev(hi)), border=NA, col=col.ci))
+  drawBand(x$R, "red", alpha=0.2)
+#   with(x$R, polygon(x=c(date,rev(date)), y=c(lo,rev(hi)), border=NA, col=col.ci))
   abline(h=1)
-  with(x$R, points(date, est, type="l", lwd=lwd.line, col="red"))
+#   with(x$R, points(date, est, type="l", lwd=lwd.line, col="red"))
+}
+
+
+addalpha <- function(colors, alpha=1.0) {
+  r <- col2rgb(colors, alpha=T)
+  # Apply alpha
+  r[4,] <- alpha*255
+  r <- r/255.0
+  return(rgb(r[1,], r[2,], r[3,], r[4,]))
+}
+
+drawBand <- function(x, col, alpha=0.2) {
+  with(x, {
+    polygon(c(date,rev(date)), c(lo,rev(hi)), border=NA, col=addalpha(col, alpha))
+    points(date, est, type="l", lwd=2, col=col)
+  })
 }
 
