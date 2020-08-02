@@ -39,8 +39,8 @@ model {
 
 # Tabulate local and imported cases
   for (t in 1:maxDate) {
-    I_local[t] <- round(sum(donset==t && local==1)%s)
-    I_imported[t] <- round(sum(donset==t && local==0)%s)
+    I_local[t] <- sum(weights*(donset==t && local==1))%s
+    I_imported[t] <- sum(weights*(donset==t && local==0))%s
   }
 # Make a reversed vector of total cases 
 # (used below, in the overall infectivity calculation)
@@ -76,8 +76,8 @@ model {
 
 # Tabulate local and imported cases
   for (t in 1:maxDate) {
-    I_local[t] <- round(sum(dinfect==t && local==1)%s)
-    I_imported[t] <- round(sum(dinfect==t && local==0)%s)
+    I_local[t] <- sum(weights*(dinfect==t && local==1))%s
+    I_imported[t] <- sum(weights*(dinfect==t && local==0))%s
   }
 # Make a reversed vector of total cases 
 # (used below, in the overall infectivity calculation)
@@ -101,8 +101,8 @@ model {
   
 # Tabulate local and imported cases
   for (t in 1:maxDate) {
-    I_local[t] <- round(sum(donset==t && local==1))
-    I_imported[t] <- round(sum(donset==t && local==0))
+    I_local[t] <- sum(weights*(donset==t && local==1))
+    I_imported[t] <- sum(weights*(donset==t && local==0))
   }
   
 # Make a reversed vector of total cases 
@@ -133,8 +133,8 @@ model {
 
 # Tabulate local and imported cases
   for (t in 1:maxDate) {
-    I_local[t] <- round(sum(dinfect==t && local==1))
-    I_imported[t] <- round(sum(dinfect==t && local==0))
+    I_local[t] <- sum(weights*(dinfect==t && local==1))
+    I_imported[t] <- sum(weights*(dinfect==t && local==0))
   }
   
 # Make a reversed vector of total cases 

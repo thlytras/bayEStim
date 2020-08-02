@@ -28,6 +28,8 @@
 #' @param maxDate Maximum date for which to estimate the effective 
 #'     reproduction number; if \code{NULL}, the maximum diagnosis date or 
 #'     symptom onset date is used.
+#' @param weights An optional vector of weights for the cases. If \code{NULL} 
+#'     (the default), all cases are given equal weights of 1.
 #' @param withInfectTimes Extrapolate infection times and use those for 
 #'     estimating the effective reproduction number. If \code{TRUE} 
 #'     (the default), a Gamma distribution with mean \code{incub_mean} and 
@@ -113,13 +115,15 @@
 #'
 #' @export
 estimate_R_Bayes <- function(donset, ddiag, local, t_from, SI_mean, SI_std, 
-    t_window = 7, t_breaks = NULL, maxDate = NULL,
+    t_window = 7, t_breaks = NULL, maxDate = NULL, weights = NULL,
     withInfectTimes = TRUE, delayAdjust = TRUE, incub_mean = 5.1, incub_std = 3.0,
     date0 = as.Date("2020-1-31"), burn = 500, iter = 5000) {
+  if (is.null(weights)) weights <- rep(1, length(donset))
   
   # Check data
-  if ((!is.null(ddiag) && length(ddiag)!=length(donset)) || length(donset)!=length(local)) {
-    stop("arguments 'ddiag', 'donset' and 'local' must have the same length.")
+  if ((!is.null(ddiag) && length(ddiag)!=length(donset)) || 
+        length(donset)!=length(local) || length(donset)!=length(weights)) {
+    stop("arguments 'ddiag', 'donset', 'local' and 'weights' must have the same length.")
   }
   if (!is.null(ddiag) && !inherits(ddiag, "Date")) stop("Argument 'ddiag' must be of class \"Date\".")
   if (!inherits(donset, "Date")) stop("Argument 'donset' must be of class \"Date\".")
@@ -153,12 +157,13 @@ estimate_R_Bayes <- function(donset, ddiag, local, t_from, SI_mean, SI_std,
   # Reorder, so that missing onset dates come last
   if (!is.null(ddiag)) ddiag <- as.integer(ddiag[order(donset)] - date0)
   local <- local[order(donset)]
+  weights <- weights[order(donset)]
   donset <- as.integer(donset[order(donset)] - date0)
   maxDate <- as.integer(config$maxDate - date0)
   
   # Set up data for JAGS
   datJ <- list(
-    donset = donset,
+    donset = donset, weights = weights,
     local = local, maxDate = maxDate,
     SI_mean_lim = SI_mean, SI_std_lim = SI_std,
     SI_k = c(0:(maxDate-1), 0),
@@ -195,7 +200,12 @@ estimate_R_Bayes <- function(donset, ddiag, local, t_from, SI_mean, SI_std,
     data = datJ, n.chains = 4, n.adapt = burn)
   
   parameters_to_sample <- c("R", "I_local", "I_imported")
-  if (!is.null(ddiag)) parameters_to_sample <- c(parameters_to_sample, "shp_onsetToDiag", "rate_onsetToDiag")
+  if (!is.null(ddiag) & delayAdjust) {
+    parameters_to_sample <- c(parameters_to_sample, "shp_onsetToDiag", "rate_onsetToDiag")
+    if (withInfectTimes) {
+      parameters_to_sample <- c(parameters_to_sample, "shp_infectToDiag", "rate_infectToDiag")
+    }
+  }
   
   mcmcSamples <- coda.samples(model, variable.names=parameters_to_sample, n.iter = iter)
 

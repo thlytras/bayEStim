@@ -15,9 +15,10 @@ plot.bayEStim <- function(x, ...) {
 plot.summary.bayEStim <- function(x, 
     col.inc = c("limegreen", "skyblue"), col.R = "red", col.ci = "grey", 
     lwd.bar = 5, lwd.line = 3, 
-    xlab = "Date", ylab.inc = "Number of cases", ylab.R = "R_effective", ...) {
+    xlab = "Date", ylab.inc = "Number of cases", ylab.R = "R_effective", 
+    no.mfrow = FALSE, ...) {
 
-  par(mfrow=c(2,1))
+  if (!no.mfrow) par(mfrow=c(2,1))
   with(x$I, plot(date, est, type="n", lwd=5, lend=1, 
     ylim=c(0, max(x$I$hi)), xlim=range(date),
     xlab="Date", ylab="Number of cases"

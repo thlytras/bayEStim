@@ -14,6 +14,7 @@ estimate_R_Bayes(
   t_window = 7,
   t_breaks = NULL,
   maxDate = NULL,
+  weights = NULL,
   withInfectTimes = TRUE,
   delayAdjust = TRUE,
   incub_mean = 5.1,
@@ -53,6 +54,9 @@ instantaneous reproduction number, see 'Details' section.}
 \item{maxDate}{Maximum date for which to estimate the effective 
 reproduction number; if \code{NULL}, the maximum diagnosis date or 
 symptom onset date is used.}
+
+\item{weights}{An optional vector of weights for the cases. If \code{NULL} 
+(the default), all cases are given equal weights of 1.}
 
 \item{withInfectTimes}{Extrapolate infection times and use those for 
 estimating the effective reproduction number. If \code{TRUE} 
