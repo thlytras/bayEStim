@@ -50,8 +50,8 @@ model {
   ifelse(withMissing, "  for (i in firstMissing:N) {
     donset[i] <- ddiag[i] - round(onsetToDiag[i])
   }\n", ""),
-  ifelse(delayAdjust, " / pgamma((maxDate - t + 1), shp_onsetToDiag, rate_onsetToDiag)", ""),
-  ifelse(delayAdjust, " / pgamma((maxDate - t + 1), shp_onsetToDiag, rate_onsetToDiag)", ""))
+  ifelse(delayAdjust, " / pgamma((maxDate - t + 0.5), shp_onsetToDiag, rate_onsetToDiag)", ""),
+  ifelse(delayAdjust, " / pgamma((maxDate - t + 0.5), shp_onsetToDiag, rate_onsetToDiag)", ""))
   
 
   chunkA_2 <- sprintf('data {
@@ -90,8 +90,8 @@ model {
   ifelse(withMissing, "  for (i in firstMissing:N) {
     donset[i] <- ddiag[i] - round(onsetToDiag[i])
   }\n", ""),
-  ifelse(delayAdjust, " / pgamma((maxDate - t + 1), shp_infectToDiag, rate_infectToDiag)", ""),
-  ifelse(delayAdjust, " / pgamma((maxDate - t + 1), shp_infectToDiag, rate_infectToDiag)", ""))
+  ifelse(delayAdjust, " / pgamma((maxDate - t + 0.5), shp_infectToDiag, rate_infectToDiag)", ""),
+  ifelse(delayAdjust, " / pgamma((maxDate - t + 0.5), shp_infectToDiag, rate_infectToDiag)", ""))
   
   
   chunkA_3 <- 'data {

@@ -17,4 +17,4 @@ Description: Estimate the effective reproduction number of an epidemic
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
